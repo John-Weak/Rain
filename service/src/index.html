@@ -1,0 +1,16 @@
+<html>
+  <head></head>
+
+  <body>
+    <h3>Home Electricity</h3>
+    <h1 id="output">😺</h1>
+    <script>
+      url = "ws://localhost:12312/ws";
+      c = new WebSocket(url);
+      c.onmessage = function (msg) {
+        document.getElementById("output").innerHTML = msg.data;
+        //console.log(msg);
+      };
+    </script>
+  </body>
+</html>
