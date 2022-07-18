@@ -25,7 +25,7 @@ func main() {
 		wshandler(c.Writer, c.Request)
 	})
 
-	r.Run("localhost:6969")
+	r.Run()
 }
 
 var wsupgrader = websocket.Upgrader{

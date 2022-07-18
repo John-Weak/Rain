@@ -1,14 +1,79 @@
 <html>
-  <head></head>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css"
+    />
+    <style>
+      .center {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+    </style>
+  </head>
 
   <body>
-    <h3>Home Electricity</h3>
-    <h1 id="output">😺</h1>
+    <h1 class="text-center">Home Electricity Status⚡</h1>
+    <h2 id="output" class="text-center" style="padding: 2rem;">😺</h2>
+
+    <picture id="alive" class="center">
+      <source
+        srcset="
+          https://raw.githubusercontent.com/John-Weak/electricity-logger/master/service/public/alive.webp
+        "
+        type="image/webp"
+      />
+      <source
+        srcset="
+          https://raw.githubusercontent.com/John-Weak/electricity-logger/master/service/public/alive.jpg
+        "
+        type="image/jpeg"
+      />
+      <img
+        src="https://raw.githubusercontent.com/John-Weak/electricity-logger/master/service/public/alive.jpg"
+      />
+    </picture>
+    <picture id="dead" class="center">
+      <source
+        srcset="
+          https://raw.githubusercontent.com/John-Weak/electricity-logger/master/service/public/dead.webp
+        "
+        type="image/webp"
+      />
+      <source
+        srcset="
+          https://raw.githubusercontent.com/John-Weak/electricity-logger/master/service/public/dead.jpg
+        "
+        type="image/jpeg"
+      />
+      <img
+        src="https://raw.githubusercontent.com/John-Weak/electricity-logger/master/service/public/dead.jpg"
+      />
+    </picture>
+
     <script>
-      url = "ws://localhost:12312/ws";
+      url = "ws://localhost:8080/ws";
       c = new WebSocket(url);
+      document.getElementById("dead").style.display = "none";
+      document.getElementById("alive").style.display = "none";
       c.onmessage = function (msg) {
-        document.getElementById("output").innerHTML = msg.data;
+        let toggle = "alive";
+        let message = "F.";
+        if (msg.data == "alive") {
+          toggle = "dead";
+          message = "unlimited power !!!";
+        } else {
+          toggle = "alive";
+          message = "Power Outage";
+        }
+        document.getElementById(msg.data).style.display = "flex";
+        document.getElementById(toggle).style.display = "none";
+        document.getElementById("output").innerHTML = message;
         //console.log(msg);
       };
     </script>
