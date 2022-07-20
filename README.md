@@ -1,13 +1,19 @@
 # Rain - Electricity Outage Logger
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/18065510/179569060-aca3d063-79b7-40ff-95c8-2807b03009f3.gif">
+<img width=600px src="https://user-images.githubusercontent.com/18065510/179917848-ceeceda2-df99-4c05-8d31-cb106057249c.gif">
 </p>
 
 This project aims to record the timing and duration of power outage in my home.
 And on later stage try to accomplish a relation between rain and outage.
 
+PS: Work in progress and not yet deployed.
+
 ## Local Setup
+
+### **Important**
+
+Do not forget to change the SSID, password, host, url from the client.ino file.
 
 To install dependencies:
 
@@ -15,6 +21,7 @@ To install dependencies:
   cd service
   go get
 ```
+
 To run Go Service:
 
 ```bash
@@ -25,7 +32,7 @@ To run Go Service:
 ## Basic Idea of Working
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/18065510/179768856-cf1fc661-fc1e-4894-ab77-eb12dc72763a.png">
+<img width=500px src="https://user-images.githubusercontent.com/18065510/179768856-cf1fc661-fc1e-4894-ab77-eb12dc72763a.png">
 </p>
 
 ## Tech
