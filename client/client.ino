@@ -8,13 +8,23 @@
 ESP8266WiFiMulti WiFiMulti;
 WebSocketsClient webSocket;
 
-// Replace with your network credentials
+// CHEESE
+//  Replace with your network credentials
 const char *ssid = "SSID";
 const char *password = "PASSWORD";
-// Set ws host,url,port
+
+// CHEESE
+//  Set ws host,url,port
 const char *host = "192.168.1.2";
 const uint16_t port = 8080;
-const char *url = "/ws";
+const char *url = "/wsRecord";
+
+// CHEESE
+// basic auth setup
+// const char *username = "JOHN";
+// const char *authPassword = "WEAK";
+// Sk9ITjpXRUFL is base64 encoded JOHN:WEAK, do not forget the colon :
+const char *authHeader = "Authorization: Basic Sk9ITjpXRUFL";
 
 void blink(uint8_t cycles = 2, unsigned int duration = 1000)
 {
@@ -85,6 +95,10 @@ void setup()
   }
   digitalWrite(LED_BUILTIN, HIGH); // light off
 
+  // basic auth
+  webSocket.setExtraHeaders(authHeader);
+
+  // connect
   webSocket.begin(host, port, url);
 
   // WebSocket event handler

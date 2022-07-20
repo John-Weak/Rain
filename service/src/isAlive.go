@@ -1,25 +1,15 @@
 package main
 
 import (
-	"github.com/gorilla/websocket"
+	"log"
 	"net/http"
 	"time"
 )
 
-func checkOrigin(r *http.Request) bool {
-	return true
-}
-
-var wsupgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin:     checkOrigin,
-}
-
 func wshandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := wsupgrader.Upgrade(w, r, nil)
 	if err != nil {
-		//fmt.Println("Failed to set websocket upgrade: %v", err)
+		log.Print("Failed to set websocket upgrade: ", err)
 		return
 	}
 

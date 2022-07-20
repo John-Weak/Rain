@@ -13,7 +13,11 @@ PS: Work in progress and not yet deployed.
 
 ### **Important**
 
-Do not forget to change the SSID, password, host, url from the client.ino file.
+Do not forget to change the password, host, url etcetra from the client.ino file.
+
+Just search for the word _CHEESE_ and it will take you to neccessary places.
+
+Also do not forget to update the .env .
 
 To install dependencies:
 
