@@ -1,7 +1,7 @@
 # Rain - Electricity Outage Logger
 
 <p align="center">
-<img width=600px src="https://user-images.githubusercontent.com/18065510/179917848-ceeceda2-df99-4c05-8d31-cb106057249c.gif">
+<img  src="https://user-images.githubusercontent.com/18065510/179917848-ceeceda2-df99-4c05-8d31-cb106057249c.gif">
 </p>
 
 This project aims to record the timing and duration of power outage in my home.
@@ -28,6 +28,15 @@ To run Go Service:
   cd service/src
   go run .
 ```
+
+## What does LED signals mean?
+
+| LED STATUS         | Description                  |
+| :----------------- | :--------------------------- |
+| Constant **ON**    | Waiting to connect to WIFI.  |
+| BLINKS **3** times | Web Socket disconnected.     |
+| BLINKS **5** times | Fatal error has occured.     |
+| Constant **OFF**   | Everything is working fine . |
 
 ## Basic Idea of Working
 
