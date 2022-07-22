@@ -1,39 +1,32 @@
 package main
 
 import (
-	"log"
-
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"johnweak.dev/electricity-logger/src/configs"
+	"johnweak.dev/electricity-logger/src/controllers"
+	"johnweak.dev/electricity-logger/src/routes"
 )
 
-var isAlive = true
-
 func main() {
-	err := godotenv.Load("../.env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
+	//load .env
+	configs.LoadEnv()
+
+	//init gin
 	gin.SetMode(gin.ReleaseMode) //comment this line to turn on debug mode
 	r := gin.Default()
 
-	r.LoadHTMLFiles("index.html")
-	go periodicallyChangeVariable()
+	//run database
+	//configs.ConnectDB()
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", nil)
-	})
+	//for testing will be removed later
+	go controllers.PeriodicallyChangeVariable()
 
-	r.GET("/ws", func(c *gin.Context) {
-		wshandler(c.Writer, c.Request)
-	})
+	//routes
+	routes.BaseRoute(r)
+	routes.RecordsRoute(r)
 
-	r.GET("/wsRecord", func(c *gin.Context) {
-		if BasicAuthWrapper(c.Writer, c.Request) {
-			recordHandler(c.Writer, c.Request)
-		}
-	})
-
+	//default port 8080
 	r.Run()
+
 }
