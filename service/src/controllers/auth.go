@@ -3,13 +3,13 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"os"
+
+	"johnweak.dev/electricity-logger/src/configs"
 )
 
 func BasicAuthWrapper(w http.ResponseWriter, r *http.Request) bool {
 
-	username := os.Getenv("BASIC_AUTH_USERNAME")
-	password := os.Getenv("BASIC_AUTH_PASSWORD")
+	username, password := configs.EnvBasicUsernameAndPassword()
 
 	u, p, ok := r.BasicAuth()
 	if !ok {

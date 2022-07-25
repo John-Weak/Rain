@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"johnweak.dev/electricity-logger/src/configs"
-	"johnweak.dev/electricity-logger/src/controllers"
 	"johnweak.dev/electricity-logger/src/routes"
 )
 
@@ -17,10 +16,7 @@ func main() {
 	r := gin.Default()
 
 	//run database
-	//configs.ConnectDB()
-
-	//for testing will be removed later
-	go controllers.PeriodicallyChangeVariable()
+	configs.ConnectDB()
 
 	//routes
 	routes.BaseRoute(r)

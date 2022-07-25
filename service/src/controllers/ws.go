@@ -18,12 +18,14 @@ var wsupgrader = websocket.Upgrader{
 	CheckOrigin:     checkOrigin,
 }
 
+var IsAlive = false
+
 const (
 	// Time allowed to write a message to the peer.
-	writeWait = 10 * time.Second
+	writeWait = 2 * time.Second
 
 	// Time allowed to read the next pong message from the peer.
-	pongWait = 30 * time.Second
+	pongWait = 10 * time.Second
 
 	// Send pings to peer with this period. Must be less than pongWait.
 	pingPeriod = (pongWait * 9) / 10
@@ -32,14 +34,11 @@ const (
 	maxMessageSize = 512
 )
 
-var (
-	newline = []byte{'\n'}
-	space   = []byte{' '}
-)
-
 func readPump(conn *websocket.Conn) {
 	defer func() {
-		//TODO: SAVE OUTAGE IN DATABASE
+		//WS closed record the time in database
+		IsAlive = false
+		go startOutage()
 		conn.Close()
 	}()
 	conn.SetReadLimit(maxMessageSize)
@@ -60,6 +59,7 @@ func readPump(conn *websocket.Conn) {
 }
 
 func writePump(conn *websocket.Conn) {
+	IsAlive = true
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
@@ -70,8 +70,10 @@ func writePump(conn *websocket.Conn) {
 		case <-ticker.C: //will run every pingPeriod Seconds
 			conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				//log.Printf("error: %v", err)
 				return
 			}
+			IsAlive = true
 		}
 	}
 }

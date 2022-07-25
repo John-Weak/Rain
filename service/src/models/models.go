@@ -1,15 +1,15 @@
-package main
+package models
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type OutageRecord struct {
-	Id    primitive.ObjectID `bson:"id,omitempty"`
+	Id    primitive.ObjectID `bson:"_id,omitempty"`
 	Start primitive.DateTime `bson:"start"`
 	End   primitive.DateTime `bson:"end,"`
+	Total int32              `bson:"total"`
 	//PEnd     *primitive.DateTime `bson:"end,"`
-	Complete bool `bson:"complete"`
 }
 
 // func (u *OutageRecord) GetBSON() (interface{}, error) {

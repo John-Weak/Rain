@@ -6,11 +6,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	//"johnweak.dev/electricity-logger/src/configs"
 	//"johnweak.dev/electricity-logger/src/constants"
 )
-
-var isAlive = true
 
 //var recordsCollection = configs.GetCollection(configs.DBClient, constants.RECORDS_COLLECTION)
 
@@ -29,7 +28,11 @@ func WSRecord() gin.HandlerFunc {
 }
 
 func recordHandler(w http.ResponseWriter, r *http.Request) {
-	log.Print("Connected to record handler \n")
+	//sleep as it takes max pongWait to detect outage
+	duration := pongWait
+	time.Sleep(duration)
+	outageEndTime := primitive.NewDateTimeFromTime(time.Now())
+
 	c, err := wsupgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Print("Failed to set websocket upgrade: ", err)
@@ -41,20 +44,9 @@ func recordHandler(w http.ResponseWriter, r *http.Request) {
 	go readPump(c)
 
 	//WS connection established
-	//if no doc exists,do nothing
-	//if doc exists, mark it as complete:true and update the end time, along with total outage
+	log.Print("WS connection established \n")
+	go endOutage(outageEndTime)
 
-	//WS closed record the time in database
-	//always create new doc as complete:false
-	//insertOne(client, ctx, dataBase, col, doc)
-	// 	/* newOutageRecord := OutageRecord{
-	// 		Id:       primitive.NewObjectID(),
-	// 		Start:    primitive.NewDateTimeFromTime(time.Now()),
-	// 		End:      time.Now(),
-	// 		Complete: false,
-	// 	}
-	// 	insertOne(recordsCollection, mongoCtx, newOutageRecord) */
-	// }()
 }
 
 func wshandler(w http.ResponseWriter, r *http.Request) {
@@ -65,23 +57,16 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	message := "none"
-	lastisAlive := isAlive
+	lastisAlive := IsAlive
 	for {
-		if message == "none" || lastisAlive != isAlive {
-			if isAlive {
+		if message == "none" || lastisAlive != IsAlive {
+			if IsAlive {
 				message = "alive"
 			} else {
 				message = "dead"
 			}
-			lastisAlive = isAlive
+			lastisAlive = IsAlive
 			conn.WriteMessage(1, []byte(message))
 		}
-	}
-}
-
-func PeriodicallyChangeVariable() {
-	for {
-		time.Sleep(2 * time.Second)
-		isAlive = !isAlive
 	}
 }
