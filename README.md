@@ -5,9 +5,15 @@
 </p>
 
 This project aims to record the timing and duration of power outage in my home.
-And on later stage try to accomplish a relation between rain and outage.
+And on later stage try to accomplish a relation between rain and outage .
 
 PS: Work in progress and not yet deployed.
+
+## Why does this project exists?
+
+**Information is power**
+
+There is no publicly accessible information regarding the timing and duration of power outage in my area.
 
 ## Local Setup
 
@@ -20,6 +26,8 @@ Just search for the word _CHEESE_ and it will take you to neccessary places.
 Also do not forget to update the .env .
 
 To install dependencies:
+
+---
 
 ```bash
   cd service
@@ -43,6 +51,8 @@ To run Go Service:
 | Constant **OFF**   | Everything is working fine . |
 
 ## Basic Idea of Working
+
+- Websocket hearbeat is used to monitor if the client is alive.
 
 <p align="center">
 <img width=500px src="https://user-images.githubusercontent.com/18065510/179768856-cf1fc661-fc1e-4894-ab77-eb12dc72763a.png">
