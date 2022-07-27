@@ -18,11 +18,11 @@ var wsupgrader = websocket.Upgrader{
 	CheckOrigin:     checkOrigin,
 }
 
-var IsAlive = false
+var isAlive = false
 
 const (
 	// Time allowed to write a message to the peer.
-	writeWait = 2 * time.Second
+	writeWait = 7 * time.Second
 
 	// Time allowed to read the next pong message from the peer.
 	pongWait = 10 * time.Second
@@ -37,7 +37,7 @@ const (
 func readPump(conn *websocket.Conn) {
 	defer func() {
 		//WS closed record the time in database
-		IsAlive = false
+		isAlive = false
 		go startOutage()
 		conn.Close()
 	}()
@@ -59,7 +59,7 @@ func readPump(conn *websocket.Conn) {
 }
 
 func writePump(conn *websocket.Conn) {
-	IsAlive = true
+	isAlive = true
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
@@ -73,7 +73,7 @@ func writePump(conn *websocket.Conn) {
 				//log.Printf("error: %v", err)
 				return
 			}
-			IsAlive = true
+			isAlive = true
 		}
 	}
 }
