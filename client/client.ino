@@ -106,6 +106,9 @@ void setup()
   // basic auth
   webSocket.setExtraHeaders(authHeader);
 
+  // connect with SSL
+  // webSocket.beginSSL(host, port, url);
+
   // connect
   webSocket.begin(host, port, url);
 
