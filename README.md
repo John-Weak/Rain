@@ -7,7 +7,7 @@
 This project aims to record the timing and duration of power outage in my home.
 And on later stage try to accomplish a relation between rain and outage .
 
-PS: Work in progress and not yet deployed.
+PS: Work in progress ~~and not yet deployed~~.Now gathering data for few weeks,till then only [live](https://rain.johnweak.dev/) status of outage will be shown. 
 
 ## Why does this project exists?
 
@@ -53,6 +53,7 @@ To run Go Service:
 ## Basic Idea of Working
 
 - Websocket hearbeat is used to monitor if the client is alive.
+- Basic HTTP auth is used to authorize the client.
 
 <p align="center">
 <img width=500px src="https://user-images.githubusercontent.com/18065510/179768856-cf1fc661-fc1e-4894-ab77-eb12dc72763a.png">
