@@ -33,10 +33,10 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div className="toggles w-full h-full">
         <div className="w-full h-full overflow-y-auto">
           <Header></Header>
-          <button className="bg-red-500 p-2" onClick={toggleRain}>
+          {/* <button className="bg-red-500 p-2" onClick={toggleRain}>
             Toggle
-          </button>
-          <div>{children}</div>
+          </button> */}
+          <div className="px-2 sm:px-4 xl:px-20">{children}</div>
         </div>
       </div>
     </div>

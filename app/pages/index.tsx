@@ -8,6 +8,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import TodayTotal from "../components/todayTotal";
+import LastSevenChart from "../components/LastSevenChart";
 
 ChartJS.register(
   CategoryScale,
@@ -30,8 +32,10 @@ export const options = {
     },
   },
 };
-
-console.log(new Date("2022-07-30T06:17:27.964Z"));
+const easterStyle =
+  "font-weight: bold; font-size: 50px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38) , 6px 6px 0 rgb(226,91,14) , 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)";
+console.log("%cEaster Egg", easterStyle);
+console.log("https://dmg.johnweak.dev");
 
 const Home: NextPage = () => {
   //const { isError, isLoading, statDump } = useStatDump();
@@ -54,6 +58,8 @@ const Home: NextPage = () => {
   if (isError) return <div>ERROR</div>; */
   return (
     <div>
+      <TodayTotal />
+      <LastSevenChart />
       <h1 className="text-3xl font-bold text-white font-mono">Techie</h1>
 
       <div className="flex justify-center items-center">
