@@ -60,19 +60,52 @@ const Home: NextPage = () => {
     <div>
       <TodayTotal />
       <LastSevenChart />
-      <h1 className="text-3xl font-bold text-white font-mono">Techie</h1>
-
-      <div className="flex justify-center items-center">
-        <div className="w-72 h-72 bg-transparent bg-opacity-[0.2] backdrop-blur-sm rounded  border-white border-2 "></div>
+      <div className="flex justify-center items-center ">
+        <div className="px-2 py-2 sm:py-4 ">
+          <span className="text-2xl sm:text-5xl leading-none  font-normal text-gray-200 underline underline-offset-[1rem]">
+            Notice
+          </span>
+        </div>
       </div>
-      <div className="w-72 h-72 bg-white bg-opacity-[0.01] backdrop-blur-xl rounded drop-shadow-lg shadow-xl"></div>
+
+      <div className="flex justify-center items-center my-10">
+        <div className="p-6 bg-transparent bg-opacity-[0.2] backdrop-blur-sm rounded  border-white border-2 ">
+          <div className="text-base text-left text-slate-200 p-2">
+            <div className="text-xl">Work in Progress.</div>
+            <div>
+              More Stats will be added soon,follow the project on{" "}
+              <a
+                href="https://twitter.com/TusharBali/status/1548208627478978561"
+                className="text-blue-500"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Twitter
+              </a>{" "}
+              or{" "}
+              <a
+                href="https://github.com/John-Weak/Rain"
+                className="text-green-500"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github
+              </a>
+            </div>
+          </div>
+          <div className="flex justify-center items-center">
+            <img src="https://media.giphy.com/media/BzyTuYCmvSORqs1ABM/giphy.gif" />
+          </div>
+        </div>
+      </div>
+      {/*  <div className="w-72 h-72 bg-white bg-opacity-[0.01] backdrop-blur-xl rounded drop-shadow-lg shadow-xl"></div>
 
       <div
         className=" w-72 h-72 bg-transparent bg-opacity-[0.01] backdrop-blur-xl rounded drop-shadow-lg"
         style={{
           boxShadow: "inset 0 0 2px hsl(199, 0%, 0%)",
         }}
-      ></div>
+      ></div> */}
     </div>
   );
 };

@@ -10,7 +10,7 @@ export default function TodayTotal() {
   // }, []);
 
   return (
-    <div className="flex justify-center items-center my-4 sm:my-8">
+    <div className="flex justify-center items-center my-8 xl:my-14">
       <div className="text-center ">
         {useOutageMin == 0 ? (
           <div className="m-4 lg:m-12">
@@ -25,7 +25,8 @@ export default function TodayTotal() {
               <div className="text-red-500">
                 {useOutageMin}
                 <span className="text-sm sm:text-3xl"> mins</span>{" "}
-                <span className="text-2xl sm:text-7xl">~</span> {useOutageMin / 60}.2{" "}
+                <span className="text-2xl sm:text-7xl">~</span>{" "}
+                {useOutageMin / 60}.2{" "}
                 <span className="text-sm sm:text-3xl">hrs</span>
               </div>
             </span>
