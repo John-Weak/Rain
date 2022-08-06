@@ -136,7 +136,7 @@ const options: Highcharts.Options = {
     {
       name: "Outage Time (mins)",
       type: "column",
-      data: [69, 150, 170, 10, 49, 20, 15],
+      data: [69, 150, 540, 10, 49, 20, 15],
       colors: [
         "#14b8a6",
         "#EAB308",

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import BobMemeFace from "./bobMemeFace";
 
 export default function TodayTotal() {
-  const [useOutageMin, setOutageMin] = useState<number>(0);
+  const [useOutageMin, setOutageMin] = useState<number>(1);
 
   // useEffect(() => {
   //   setInterval(() => {
@@ -26,33 +27,14 @@ export default function TodayTotal() {
                 {useOutageMin}
                 <span className="text-sm sm:text-3xl"> mins</span>{" "}
                 <span className="text-2xl sm:text-7xl">~</span>{" "}
-                {useOutageMin / 60}.2{" "}
+                {(useOutageMin / 60).toFixed(1)}
                 <span className="text-sm sm:text-3xl">hrs</span>
               </div>
             </span>
           </div>
         )}
       </div>
-      <div className="w-36 sm:w-64">{bobFace(useOutageMin)}</div>
+      <div className="w-36 sm:w-64">{BobMemeFace(useOutageMin)}</div>
     </div>
   );
-}
-
-function bobFace(outageHours: number) {
-  if (outageHours == 0)
-    return (
-      <picture id="alive">
-        <source srcSet="images/alive.webp" type="image/webp" />
-        <source srcSet="images/alive.jpg" type="image/jpeg" />
-        <img src="images/alive.jpg" />
-      </picture>
-    );
-  else
-    return (
-      <picture id="dead">
-        <source srcSet="images/dead.webp" type="image/webp" />
-        <source srcSet="images/dead.jpg" type="image/jpeg" />
-        <img src="images/dead.jpg" />
-      </picture>
-    );
 }

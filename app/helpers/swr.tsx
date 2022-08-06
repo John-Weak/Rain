@@ -1,20 +1,32 @@
 import { env } from "process";
 import useSWR from "swr";
+import { OutageRecord } from "../types/outage";
 
-const API = env.NODE_ENV === "development" ? "http://localhost:8080/" : "";
-
+const API = process.env.API || "http://localhost:8080/";
 const fetcher = (input: RequestInfo | URL, init?: RequestInit | undefined) =>
   fetch(input, init).then((res) => res.json());
 
-export function useStatDump() {
-  // const { data, error } = useSWR(`${API}statdump`, fetcher);
-  const { data, error } = useSWR<outageRecord[]>(
-    "http://localhost:8080/statdump",
+// export function useStatDump() {
+//   // const { data, error } = useSWR(`${API}statdump`, fetcher);
+//   const { data, error } = useSWR<outageRecord[]>(
+//     "http://localhost:8080/statdump",
+//     fetcher
+//   );
+
+//   return {
+//     statDump: data,
+//     isLoading: !error && !data,
+//     isError: error,
+//   };
+// }
+
+export function useLatestOutage(count = 7) {
+  const { data, error } = useSWR<OutageRecord[]>(
+    `${API}latest?count=${count}`,
     fetcher
   );
-
   return {
-    statDump: data,
+    data,
     isLoading: !error && !data,
     isError: error,
   };
