@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import BobMemeFace from "../components/bobMemeFace";
 import { getLocaleDateTimeString } from "../helpers/dateTime";
 import { useLatestOutage } from "../helpers/swr";
-import { useLatestOutagesStore } from "../stores/latest";
 import { OutageRecord } from "../types/outage";
 
 export default function Live() {
