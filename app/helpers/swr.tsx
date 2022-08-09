@@ -1,30 +1,32 @@
 import { env } from "process";
 import useSWR from "swr";
 import { OutageRecord } from "../types/outage";
+import { checkDateis1970 } from "./dateTime";
 
-const API = process.env.API || "http://localhost:8080/";
+const API = process.env.API || "http://192.168.1.2:8080/";
+
 const fetcher = (input: RequestInfo | URL, init?: RequestInit | undefined) =>
-  fetch(input, init).then((res) => res.json());
+  fetch(input, init)
+    .then((res) => res.json())
+    .then((data) => {
+      if (checkDateis1970(data[0].End)) {
+        //console.log(data);
+        data[0].End = new Date().toISOString();
+        data[0].Total =
+          (new Date(data[0].End).getTime() -
+            new Date(data[0].Start).getTime()) /
+          1000;
+      }
 
-// export function useStatDump() {
-//   // const { data, error } = useSWR(`${API}statdump`, fetcher);
-//   const { data, error } = useSWR<outageRecord[]>(
-//     "http://localhost:8080/statdump",
-//     fetcher
-//   );
-
-//   return {
-//     statDump: data,
-//     isLoading: !error && !data,
-//     isError: error,
-//   };
-// }
+      return data;
+    });
 
 export function useLatestOutage(count = 7) {
   const { data, error } = useSWR<OutageRecord[]>(
     `${API}latest?count=${count}`,
     fetcher
   );
+
   return {
     data,
     isLoading: !error && !data,

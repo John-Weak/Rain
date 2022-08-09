@@ -4,7 +4,9 @@ import more from "highcharts/highcharts-more";
 import highcharts3d from "highcharts/highcharts-3d";
 import timeline from "highcharts/modules/timeline";
 import HighchartsReact from "highcharts-react-official";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLatestOutage } from "../helpers/swr";
+import { getLocaleDateString } from "../helpers/dateTime";
 
 if (typeof Highcharts === "object") {
   highcharts3d(Highcharts);
@@ -13,74 +15,11 @@ if (typeof Highcharts === "object") {
   //more(Highcharts);
 }
 
-// const options: Highcharts.Options = {
-//   exporting: {
-//     enabled: false,
-//   },
-//   credits: {
-//     enabled: false,
-//   },
-//   chart: {
-//     type: "timeline",
-//     backgroundColor: "transparent",
-//   },
-//   title: {
-//     text: "RECHIE RENDI",
-//   },
-//   subtitle: {
-//     text: 'Info source: <a href="https://dmg.johnweak.dev/">www.dmg.johnweak.dev</a>',
-//   },
-//   xAxis: {
-//     //type: "datetime",
-//     visible: false,
-//   },
-//   yAxis: {
-//     visible: false,
-//   },
-//   series: [
-//     {
-//       type: "timeline",
-
-//       /*
-//          {
-//           x: 0,
-//           low: new Date("2022-08-03T06:13:57.409+00:00").getUTCSeconds(),
-//           high: new Date("2022-08-03T07:35:42.356+00:00").getUTCSeconds(),
-//           y: new Date("2022-08-03T06:13:57.409+00:00").getUTCSeconds(),
-//         },
-//         {
-//           x: 1,
-//           low: new Date("2022-08-02T04:59:46.980+00:00").getUTCSeconds(),
-//           high: new Date("2022-08-02T14:18:52.375+00:00").getUTCSeconds(),
-//           y: new Date("2022-08-02T04:59:46.980+00:00").getUTCSeconds(),
-//           color: "#ffae3d",
-//         },
-//          */
-//       data: [
-//         {
-//           x: new Date("2022-08-03T06:13:57.409+00:00").getUTCSeconds(),
-//           length:
-//             new Date("2022-08-03T07:35:42.356+00:00").getUTCSeconds() -
-//             new Date("2022-08-03T06:13:57.409+00:00").getUTCSeconds(),
-//           label: `${new Date(
-//             "2022-08-03T06:13:57.409+00:00"
-//           ).toLocaleString()}`,
-//         },
-//         {
-//           x: new Date("2022-08-02T04:59:46.980+00:00").getUTCSeconds(),
-//           length:
-//             new Date("2022-08-02T14:18:52.375+00:00").getUTCSeconds() -
-//             new Date("2022-08-02T04:59:46.980+00:00").getUTCSeconds(),
-//           label: `${new Date(
-//             "2022-08-02T04:59:46.980+00:00"
-//           ).toLocaleString()}`,
-//         },
-//       ],
-//     },
-//   ],
-// };
-
 const options: Highcharts.Options = {
+  lang: {
+    decimalPoint: "-",
+  },
+  accessibility: { enabled: true },
   legend: { enabled: false },
   title: { text: undefined },
   exporting: {
@@ -103,7 +42,10 @@ const options: Highcharts.Options = {
     },
     column: {
       borderWidth: 0,
-      dataLabels: { format: "{point.y} mins {point.y /60}", color: "#fff" },
+      dataLabels: {
+        format: "{point.y} mins",
+        color: "#fff",
+      },
       pointWidth: 18,
       //maxPointWidth: 20,
     },
@@ -122,21 +64,13 @@ const options: Highcharts.Options = {
     lineWidth: 0,
     grid: { enabled: false },
     labels: { style: { color: "#E4E4E7" } },
-    categories: [
-      "6 Jan 2022",
-      "6 Jan 2022",
-      "7 Jan 2022",
-      "6 Jan 2022",
-      "6 Jan 2022",
-      "6 Jan 2022",
-      "9 Jan 2022",
-    ],
+    categories: [],
   },
   series: [
     {
       name: "Outage Time (mins)",
       type: "column",
-      data: [69, 150, 540, 10, 49, 20, 15],
+      data: [],
       colors: [
         "#14b8a6",
         "#EAB308",
@@ -151,9 +85,43 @@ const options: Highcharts.Options = {
   ],
 };
 
+function float2int(value: number) {
+  return value | 0;
+}
+
 function LastSevenChart() {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
+  const [useChartOptions, setChartOptions] = useState({
+    ...options,
+  });
+  const { data, isError, isLoading } = useLatestOutage();
 
+  useEffect(() => {
+    if (!data) return;
+
+    const seriesPoints = [];
+    const dateCategories = [];
+    for (let i = 0; i < data.length; i++) {
+      dateCategories.push(getLocaleDateString(data[i].Start));
+      let seriesPoint = data[i].Total / 60;
+      seriesPoint = float2int(seriesPoint);
+      seriesPoints.push(seriesPoint);
+    }
+    setChartOptions({
+      xAxis: {
+        categories: dateCategories,
+      },
+      series: [
+        {
+          name: "Outage Time (mins)",
+          type: "column",
+          data: seriesPoints,
+        },
+      ],
+    });
+  }, [data]);
+
+  if (isError) return <div>Error: {isError.message}</div>;
   return (
     <div className="sm:pt-10 lg:pt-12">
       <div className="max-w-[1300px] m-auto">
@@ -164,7 +132,7 @@ function LastSevenChart() {
         </div>
         <HighchartsReact
           highcharts={Highcharts}
-          options={options}
+          options={useChartOptions}
           ref={chartComponentRef}
         />
       </div>
