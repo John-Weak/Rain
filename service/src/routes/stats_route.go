@@ -5,6 +5,6 @@ import (
 	"johnweak.dev/electricity-logger/src/controllers"
 )
 
-func BaseRoute(r *gin.Engine) {
-	r.GET("/", controllers.Base())
+func StatsRoute(r *gin.Engine) {
+	r.GET("/latest", controllers.LatestStat())
 }

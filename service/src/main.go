@@ -21,6 +21,7 @@ func main() {
 	//routes
 	routes.BaseRoute(r)
 	routes.RecordsRoute(r)
+	routes.StatsRoute(r)
 
 	//default port 8080
 	r.Run()
