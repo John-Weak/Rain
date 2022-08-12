@@ -3,8 +3,8 @@ import useSWR from "swr";
 import { OutageRecord } from "../types/outage";
 import { checkDateis1970 } from "./dateTime";
 
-const API = process.env.API || "http://192.168.1.2:8080/";
-
+export const API = process.env.API || "http://192.168.1.2:8080/";
+export const WS = process.env.WS || "ws://192.168.1.2:8080/ws";
 const fetcher = (input: RequestInfo | URL, init?: RequestInit | undefined) =>
   fetch(input, init)
     .then((res) => res.json())
@@ -17,7 +17,6 @@ const fetcher = (input: RequestInfo | URL, init?: RequestInit | undefined) =>
             new Date(data[0].Start).getTime()) /
           1000;
       }
-
       return data;
     });
 

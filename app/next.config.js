@@ -4,7 +4,8 @@ const nextConfig = {
   swcMinify: true,
   env: {
     API: process.env.API,
-  }
-}
+    WS: process.env.WS,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

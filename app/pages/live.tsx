@@ -1,13 +1,29 @@
 import { useEffect, useState } from "react";
 import BobMemeFace from "../components/bobMemeFace";
 import { getLocaleDateTimeString } from "../helpers/dateTime";
-import { useLatestOutage } from "../helpers/swr";
+import { useLatestOutage, API, WS } from "../helpers/swr";
 import { OutageRecord } from "../types/outage";
-
+import { useSWRConfig } from "swr";
 export default function Live() {
-  const [useOutage, setOutage] = useState<boolean>(true);
+  const [useOutage, setOutage] = useState<boolean>();
   const [useOutageDate, setOutageDate] = useState<OutageRecord>();
   const { data, isError, isLoading } = useLatestOutage();
+  const [useWsLoading, setWsLoading] = useState<boolean>(true);
+  const { mutate: swrMutate } = useSWRConfig();
+
+  function outageWS(msg: MessageEvent<any>) {
+    setOutage(msg.data == "dead");
+    swrMutate(`${API}latest?count=7`);
+  }
+
+  useEffect(() => {
+    let c = new WebSocket(WS);
+    c.onopen = function () {
+      setWsLoading(false);
+    };
+    c.onmessage = outageWS;
+  }, []);
+
   useEffect(() => {
     if (data) {
       const start = getLocaleDateTimeString(data[0].Start);
@@ -19,9 +35,6 @@ export default function Live() {
         Total: total,
         Id: "",
       });
-      // setOutageDate(dateTime);
-      // console.log(dateTime);
-      // console.log("USE EFFECT");
     }
   }, [data]);
 
@@ -34,14 +47,24 @@ export default function Live() {
           <span className="animate-pulse text-red-100">Live</span> Electricity
           Status
         </div>
-        <div className="w-36 sm:w-64 m-auto">
-          {BobMemeFace(useOutage ? 1 : 0)}
+        <div className="w-36 h-36 sm:w-64 sm:h-64 m-auto">
+          {useWsLoading ? (
+            <div className="bg-black bg-opacity-40 backdrop-filter backdrop-saturate-150 backdrop-blur-xl firefox:bg-opacity-100 animate-pulse h-full"></div>
+          ) : (
+            BobMemeFace(useOutage ? 1 : 0)
+          )}
         </div>
         <div className="mt-2 mb-8 sm:mb-14 sm:mt-2 text-3xl sm:text-7xl leading-none tracking-tight font-extrabold">
-          {useOutage ? (
-            <div className="text-red-500">Outage is live</div>
+          {useWsLoading ? (
+            <div className="bg-black bg-opacity-40 backdrop-filter backdrop-saturate-150 backdrop-blur-xl firefox:bg-opacity-100 animate-pulse h-8 sm:h-16"></div>
           ) : (
-            <div className="text-green-500">No outage currently</div>
+            <>
+              {useOutage ? (
+                <div className="text-red-500">Outage is live</div>
+              ) : (
+                <div className="text-green-500">No outage currently</div>
+              )}
+            </>
           )}
         </div>
 
@@ -55,8 +78,10 @@ export default function Live() {
                 Started At:
               </div>
               <div
-                className={`sm:text-2xl pb-2 ${
-                  isLoading ? "bg-red-400 animate-pulse" : "text-green-500"
+                className={`sm:text-2xl pb-2 text-green-500 ${
+                  isLoading
+                    ? "bg-black bg-opacity-40 animate-pulse h-4 sm:h-6"
+                    : ""
                 }`}
               >
                 {useOutageDate?.Start}
@@ -64,7 +89,13 @@ export default function Live() {
               <div className="text-xl sm:text-3xl font-medium text-pink-400 p-2">
                 {useOutage ? "Total duration till now" : "Total duration"}
               </div>
-              <div className="sm:text-2xl pb-2">
+              <div
+                className={`sm:text-2xl pb-2 ${
+                  isLoading
+                    ? "bg-black bg-opacity-40 animate-pulse h-4 sm:h-6"
+                    : ""
+                }`}
+              >
                 {useOutageDate?.Total && (
                   <>
                     {(useOutageDate.Total / 60).toFixed(1)}
@@ -78,7 +109,15 @@ export default function Live() {
                   <div className="text-xl sm:text-3xl font-medium text-teal-400 p-2">
                     Ended At:
                   </div>
-                  <div className="sm:text-2xl pb-2">{useOutageDate?.End}</div>
+                  <div
+                    className={`sm:text-2xl pb-2 ${
+                      isLoading
+                        ? "bg-black bg-opacity-40 animate-pulse h-4 sm:h-6"
+                        : ""
+                    }`}
+                  >
+                    {useOutageDate?.End}
+                  </div>
                 </>
               )}
             </div>
