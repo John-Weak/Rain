@@ -1,18 +1,14 @@
 import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
-import more from "highcharts/highcharts-more";
-import highcharts3d from "highcharts/highcharts-3d";
-import timeline from "highcharts/modules/timeline";
+import accessibility from "highcharts/modules/accessibility";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useRef, useState } from "react";
 import { useLatestOutage } from "../helpers/swr";
 import { getLocaleDateString } from "../helpers/dateTime";
 
 if (typeof Highcharts === "object") {
-  highcharts3d(Highcharts);
   HighchartsExporting(Highcharts);
-  //timeline(Highcharts);
-  //more(Highcharts);
+  accessibility(Highcharts);
 }
 
 const options: Highcharts.Options = {
@@ -90,6 +86,12 @@ function float2int(value: number) {
 }
 
 function LastSevenChart() {
+  const chartLoading = [];
+
+  for (let i = 0; i < 7; i++) {
+    chartLoading.push(<div className="frost-loader w-full h-8 my-5"></div>);
+  }
+
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
   const [useChartOptions, setChartOptions] = useState({
     ...options,
@@ -130,11 +132,22 @@ function LastSevenChart() {
             Last <span className="text-cyan-500">7</span> Outages
           </span>
         </div>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={useChartOptions}
-          ref={chartComponentRef}
-        />
+        {isLoading ? (
+          <>
+            {[...Array(7)].map((e, i) => (
+              <div
+                className="frost-loader w-full h-8 my-5"
+                key={i + "chartLoader"}
+              ></div>
+            ))}
+          </>
+        ) : (
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={useChartOptions}
+            ref={chartComponentRef}
+          />
+        )}
       </div>
     </div>
   );

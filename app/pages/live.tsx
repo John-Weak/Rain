@@ -49,14 +49,14 @@ export default function Live() {
         </div>
         <div className="w-36 h-36 sm:w-64 sm:h-64 m-auto">
           {useWsLoading ? (
-            <div className="bg-black bg-opacity-40 backdrop-filter backdrop-saturate-150 backdrop-blur-xl firefox:bg-opacity-100 animate-pulse h-full"></div>
+            <div className="frost-loader h-full"></div>
           ) : (
             BobMemeFace(useOutage ? 1 : 0)
           )}
         </div>
         <div className="mt-2 mb-8 sm:mb-14 sm:mt-2 text-3xl sm:text-7xl leading-none tracking-tight font-extrabold">
           {useWsLoading ? (
-            <div className="bg-black bg-opacity-40 backdrop-filter backdrop-saturate-150 backdrop-blur-xl firefox:bg-opacity-100 animate-pulse h-8 sm:h-16"></div>
+            <div className="frost-loader h-8 sm:h-16"></div>
           ) : (
             <>
               {useOutage ? (
@@ -78,10 +78,8 @@ export default function Live() {
                 Started At:
               </div>
               <div
-                className={`sm:text-2xl pb-2 text-green-500 ${
-                  isLoading
-                    ? "bg-black bg-opacity-40 animate-pulse h-4 sm:h-6"
-                    : ""
+                className={`sm:text-2xl pb-2 ${
+                  isLoading ? "frost-loader h-4 sm:h-6" : ""
                 }`}
               >
                 {useOutageDate?.Start}
@@ -91,9 +89,7 @@ export default function Live() {
               </div>
               <div
                 className={`sm:text-2xl pb-2 ${
-                  isLoading
-                    ? "bg-black bg-opacity-40 animate-pulse h-4 sm:h-6"
-                    : ""
+                  isLoading ? "frost-loader h-4 sm:h-6" : ""
                 }`}
               >
                 {useOutageDate?.Total && (
@@ -111,9 +107,7 @@ export default function Live() {
                   </div>
                   <div
                     className={`sm:text-2xl pb-2 ${
-                      isLoading
-                        ? "bg-black bg-opacity-40 animate-pulse h-4 sm:h-6"
-                        : ""
+                      isLoading ? "frost-loader h-4 sm:h-6" : ""
                     }`}
                   >
                     {useOutageDate?.End}
