@@ -4,7 +4,7 @@ import { useLatestOutage } from "../helpers/swr";
 import BobMemeFace from "./bobMemeFace";
 
 export default function TodayTotal() {
-  const [useOutageMin, setOutageMin] = useState<number>();
+  const [useOutageMin, setOutageMin] = useState<number>(0);
   const { data, isError, isLoading } = useLatestOutage();
 
   useEffect(() => {
