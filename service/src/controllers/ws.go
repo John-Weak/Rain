@@ -9,7 +9,7 @@ import (
 )
 
 func checkOrigin(r *http.Request) bool {
-	return true //unsafe,might update later
+	return true //TODO: unsafe,might update later
 }
 
 var wsupgrader = websocket.Upgrader{
@@ -34,12 +34,12 @@ const (
 	maxMessageSize = 512
 )
 
-func readPump(conn *websocket.Conn) {
+func readPump(conn *websocket.Conn, hub *Hub) {
 	defer func() {
 		//WS closed record the time in database
-		isAlive = false
 		go startOutage()
 		conn.Close()
+		distinctIsAlive(false, hub)
 	}()
 	conn.SetReadLimit(maxMessageSize)
 	conn.SetReadDeadline(time.Now().Add(pongWait))
@@ -58,22 +58,36 @@ func readPump(conn *websocket.Conn) {
 	}
 }
 
-func writePump(conn *websocket.Conn) {
-	isAlive = true
+func writePump(conn *websocket.Conn, hub *Hub) {
+	distinctIsAlive(true, hub)
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
 		conn.Close()
 	}()
+
 	for {
-		select {
-		case <-ticker.C: //will run every pingPeriod Seconds
-			conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if err := conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-				//log.Printf("error: %v", err)
-				return
-			}
-			isAlive = true
+		<-ticker.C //will run every pingPeriod Seconds
+		conn.SetWriteDeadline(time.Now().Add(writeWait))
+		if err := conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+			//log.Printf("error: %v", err)
+			return
 		}
+		distinctIsAlive(true, hub)
 	}
+}
+
+func distinctIsAlive(expected bool, hub *Hub) {
+	if expected != isAlive {
+		isAlive = expected
+		message := isAliveMessgae(expected)
+		hub.broadcast <- []byte(message)
+	}
+}
+
+func isAliveMessgae(param bool) string {
+	if param {
+		return "alive"
+	}
+	return "dead"
 }

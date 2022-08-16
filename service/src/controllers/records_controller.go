@@ -9,22 +9,22 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func WS() gin.HandlerFunc {
+func WS(hub *Hub) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		wshandler(c.Writer, c.Request)
+		wshandler(c.Writer, c.Request, hub)
 	}
 }
 
-func WSRecord() gin.HandlerFunc {
+func WSRecord(hub *Hub) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if BasicAuthWrapper(c.Writer, c.Request) {
-			recordHandler(c.Writer, c.Request)
+			recordHandler(c.Writer, c.Request, hub)
 		}
 	}
 }
 
-func recordHandler(w http.ResponseWriter, r *http.Request) {
-	isAlive = true
+func recordHandler(w http.ResponseWriter, r *http.Request, hub *Hub) {
+	distinctIsAlive(true, hub)
 	c, err := wsupgrader.Upgrade(w, r, nil)
 
 	//sleep as it takes max pongWait seconds to detect outage
@@ -38,32 +38,28 @@ func recordHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//heartbeat
-	go writePump(c)
-	go readPump(c)
+	go writePump(c, hub)
+	go readPump(c, hub)
 
 	//WS connection established
 	go endOutage(outageEndTime)
 
 }
 
-func wshandler(w http.ResponseWriter, r *http.Request) {
+func wshandler(w http.ResponseWriter, r *http.Request, hub *Hub) {
 	conn, err := wsupgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Print("Failed to set websocket upgrade: ", err)
 		return
 	}
+	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
+	client.hub.register <- client
 
-	message := "none"
-	lastisAlive := isAlive
-	for {
-		if message == "none" || lastisAlive != isAlive {
-			if isAlive {
-				message = "alive"
-			} else {
-				message = "dead"
-			}
-			lastisAlive = isAlive
-			conn.WriteMessage(1, []byte(message))
-		}
-	}
+	//send the inital message
+	message := isAliveMessgae(isAlive)
+	conn.WriteMessage(1, []byte(message))
+
+	go client.writePump()
+	go client.readPump()
+
 }
