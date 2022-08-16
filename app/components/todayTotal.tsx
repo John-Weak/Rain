@@ -4,7 +4,7 @@ import { useLatestOutage } from "../helpers/swr";
 import BobMemeFace from "./bobMemeFace";
 
 export default function TodayTotal() {
-  const [useOutageMin, setOutageMin] = useState<number>(0);
+  const [useOutageMin, setOutageMin] = useState<number>();
   const { data, isError, isLoading } = useLatestOutage();
 
   useEffect(() => {
@@ -45,10 +45,10 @@ export default function TodayTotal() {
                 <span className="text-3xl sm:text-7xl leading-none tracking-tight font-extrabold text-center text-slate-200">
                   Today's Total Outage{" "}
                   <div className="text-red-500">
-                    {(useOutageMin / 60).toFixed(1)}
+                    {(useOutageMin! / 60).toFixed(1)}
                     <span className="text-sm sm:text-3xl"> mins</span>{" "}
                     <span className="text-2xl sm:text-7xl">~</span>{" "}
-                    {(useOutageMin / 3600).toFixed(1)}
+                    {(useOutageMin! / 3600).toFixed(1)}
                     <span className="text-sm sm:text-3xl">hrs</span>
                   </div>
                 </span>
@@ -61,7 +61,7 @@ export default function TodayTotal() {
         {isLoading ? (
           <div className="frost-loader h-full"></div>
         ) : (
-          BobMemeFace(useOutageMin)
+          BobMemeFace(useOutageMin!)
         )}
       </div>
     </div>
