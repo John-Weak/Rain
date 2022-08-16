@@ -61,9 +61,9 @@ To run Next.js app:
 
 ---
 
-<img align="right" width="300" height="200" src="https://user-images.githubusercontent.com/18065510/184974035-c4804125-b380-4409-9dd0-f86c1799dd12.gif">
-
 ## What does LED signals mean?
+
+<img align="right" width="300" height="200" src="https://user-images.githubusercontent.com/18065510/184974035-c4804125-b380-4409-9dd0-f86c1799dd12.gif">
 
 | LED STATUS         | Description                  |
 | :----------------- | :--------------------------- |
