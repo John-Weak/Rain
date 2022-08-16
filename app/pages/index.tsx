@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import TodayTotal from "../components/todayTotal";
 import LastSevenChart from "../components/LastSevenChart";
+import GreatestOutage from "../components/greatest";
 
 ChartJS.register(
   CategoryScale,
@@ -60,6 +61,7 @@ const Home: NextPage = () => {
     <div>
       <TodayTotal />
       <LastSevenChart />
+      <GreatestOutage />
       <div className="flex justify-center items-center ">
         <div className="px-2 py-2 sm:py-4 ">
           <span className="text-2xl sm:text-5xl leading-none  font-normal text-gray-200 underline underline-offset-[1rem]">
@@ -73,7 +75,7 @@ const Home: NextPage = () => {
           <div className="text-base text-left text-slate-200 p-2">
             <div className="text-xl">Work in Progress.</div>
             <div>
-              More Stats will be added soon,follow the project on{" "}
+              More Stats will be added soon, follow the project on{" "}
               <a
                 href="https://twitter.com/TusharBali/status/1548208627478978561"
                 className="text-blue-500"
@@ -98,14 +100,6 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
-      {/*  <div className="w-72 h-72 bg-white bg-opacity-[0.01] backdrop-blur-xl rounded drop-shadow-lg shadow-xl"></div>
-
-      <div
-        className=" w-72 h-72 bg-transparent bg-opacity-[0.01] backdrop-blur-xl rounded drop-shadow-lg"
-        style={{
-          boxShadow: "inset 0 0 2px hsl(199, 0%, 0%)",
-        }}
-      ></div> */}
     </div>
   );
 };

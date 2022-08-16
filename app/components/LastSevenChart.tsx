@@ -5,6 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import { useEffect, useRef, useState } from "react";
 import { useLatestOutage } from "../helpers/swr";
 import { getLocaleDateString } from "../helpers/dateTime";
+import { float2int } from "../helpers/conversion";
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -81,17 +82,9 @@ const options: Highcharts.Options = {
   ],
 };
 
-function float2int(value: number) {
-  return value | 0;
-}
+
 
 function LastSevenChart() {
-  const chartLoading = [];
-
-  for (let i = 0; i < 7; i++) {
-    chartLoading.push(<div className="frost-loader w-full h-8 my-5"></div>);
-  }
-
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
   const [useChartOptions, setChartOptions] = useState({
     ...options,

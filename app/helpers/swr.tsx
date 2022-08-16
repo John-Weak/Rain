@@ -20,6 +20,18 @@ const fetcher = (input: RequestInfo | URL, init?: RequestInit | undefined) =>
       return data;
     });
 
+export function useGreatestOutage(count = 5) {
+  const { data, error } = useSWR<OutageRecord[]>(
+    `${API}greatest?count=${count}`,
+    fetcher
+  );
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+
 export function useLatestOutage(count = 7) {
   const { data, error } = useSWR<OutageRecord[]>(
     `${API}latest?count=${count}`,
