@@ -2,7 +2,7 @@ export function getLocaleDateTimeString(
   date: string,
   timeZone = "Asia/Kolkata"
 ) {
-  return new Date(date).toLocaleString(undefined, {
+  return new Date(date).toLocaleString('en-IN', {
     timeZone: timeZone,
     hour12: true,
     hour: "numeric",
@@ -14,7 +14,7 @@ export function getLocaleDateTimeString(
 }
 
 export function getLocaleDateString(date: string, timeZone = "Asia/Kolkata") {
-  return new Date(date).toLocaleString(undefined, {
+  return new Date(date).toLocaleString('en-IN', {
     timeZone: timeZone,
     hour12: true,
     hour: "numeric",
@@ -30,12 +30,12 @@ export function isSameLocaleDate(
   timeZone = "Asia/Kolkata"
 ) {
   //console.log(date1, date2);
-  const d1 = new Date(date1).toLocaleDateString(undefined, {
+  const d1 = new Date(date1).toLocaleDateString('en-IN', {
     timeZone: timeZone,
   });
 
   let date2_ = date2 == undefined ? new Date() : new Date(date2);
-  const d2 = date2_.toLocaleDateString(undefined, {
+  const d2 = date2_.toLocaleDateString('en-IN', {
     timeZone: timeZone,
   });
   //console.log(d1, d2);

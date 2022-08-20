@@ -1,4 +1,3 @@
-import { env } from "process";
 import useSWR from "swr";
 import { OutageRecord } from "../types/outage";
 import { checkDateis1970 } from "./dateTime";

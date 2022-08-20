@@ -11,7 +11,7 @@ import {
 import TodayTotal from "../components/todayTotal";
 import LastSevenChart from "../components/LastSevenChart";
 import GreatestOutage from "../components/greatest";
-import Image from "next/image";
+import MonthHeatChart from "../components/MonthHeatChart";
 
 ChartJS.register(
   CategoryScale,
@@ -45,48 +45,7 @@ const Home: NextPage = () => {
       <TodayTotal />
       <LastSevenChart />
       <GreatestOutage />
-     {/*  <div className="flex justify-center items-center ">
-        <div className="px-2 py-2 sm:py-4 ">
-          <span className="text-2xl sm:text-5xl leading-none  font-normal text-gray-200 underline underline-offset-[1rem]">
-            Notice
-          </span>
-        </div>
-      </div> */}
-
-      {/*  <div className="flex justify-center items-center my-10">
-        <div className="p-6 bg-transparent bg-opacity-[0.2] backdrop-blur-sm rounded  border-white border-2 ">
-          <div className="text-base text-left text-slate-200 p-2">
-            <div className="text-xl">Work in Progress.</div>
-            <div>
-              More Stats will be added soon, follow the project on{" "}
-              <a
-                href="https://twitter.com/TusharBali/status/1548208627478978561"
-                className="text-blue-500"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Twitter
-              </a>{" "}
-              or{" "}
-              <a
-                href="https://github.com/John-Weak/Rain"
-                className="text-green-500"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                github
-              </a>
-            </div>
-          </div>
-          <div className="flex justify-center items-center">
-            <Image
-              src="https://media.giphy.com/media/BzyTuYCmvSORqs1ABM/giphy.gif"
-              alt="cat with ⚡"
-              layout="fill"
-            />
-          </div>
-        </div>
-      </div> */}
+      <MonthHeatChart />
     </>
   );
 };
