@@ -11,12 +11,11 @@ export default function Live() {
   const [useWsLoading, setWsLoading] = useState<boolean>(true);
   const { mutate: swrMutate } = useSWRConfig();
 
-  function outageWS(msg: MessageEvent<any>) {
-    setOutage(msg.data == "dead");
-    swrMutate(`${API}latest?count=7`);
-  }
-
   useEffect(() => {
+    function outageWS(msg: MessageEvent<any>) {
+      setOutage(msg.data == "dead");
+      swrMutate(`${API}latest?count=7`);
+    }
     let c = new WebSocket(WS);
     c.onopen = function () {
       setWsLoading(false);

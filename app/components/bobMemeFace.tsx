@@ -1,18 +1,11 @@
+import Image from "next/image";
+import bobAlive from "../public/images/alive.webp";
+import bobDead from "../public/images/dead.webp";
+
 export default function BobMemeFace(outageHours: number) {
-  if (outageHours == 0)
-    return (
-      <picture id="alive">
-        <source srcSet="images/alive.webp" type="image/webp" />
-        <source srcSet="images/alive.jpg" type="image/jpeg" />
-        <img src="images/alive.jpg" />
-      </picture>
-    );
-  else
-    return (
-      <picture id="dead">
-        <source srcSet="images/dead.webp" type="image/webp" />
-        <source srcSet="images/dead.jpg" type="image/jpeg" />
-        <img src="images/dead.jpg" />
-      </picture>
-    );
+  return outageHours == 0 ? (
+    <Image src={bobAlive} alt="bob alive" />
+  ) : (
+    <Image src={bobDead} alt="bob dead" />
+  );
 }

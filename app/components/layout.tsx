@@ -2,28 +2,55 @@ import { useEffect, useState } from "react";
 import { getDropAndBackDrop } from "../utils/rain";
 import Header from "./header";
 import Footer from "./footer";
+import Head from "next/head";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  let { drop, backDrop } = getDropAndBackDrop();
   const [drops, setDrops] = useState("");
   const [backDrops, setBackDrops] = useState("");
 
   useEffect(() => {
+    const { drop, backDrop } = getDropAndBackDrop();
     setDrops(drop);
     setBackDrops(backDrop);
   }, []);
 
-  function toggleRain() {
-    if (!drops) {
-      setDrops(drop);
-      setBackDrops(backDrop);
-    } else {
-      setDrops("");
-      setBackDrops("");
-    }
-  }
+  // function toggleRain() {
+  //   if (!drops) {
+  //     setDrops(drop);
+  //     setBackDrops(backDrop);
+  //   } else {
+  //     setDrops("");
+  //     setBackDrops("");
+  //   }
+  // }
   return (
     <>
+      <Head>
+        <title>Rain</title>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="apple-mobile-web-app-title" content="Rain" />
+        <meta name="application-name" content="Rain" />
+        <meta name="msapplication-TileColor" content="#121212" />
+        <meta name="theme-color" content="#121212" />
+      </Head>
       <div className="rain front-row">
         <div dangerouslySetInnerHTML={{ __html: drops }}></div>
       </div>
