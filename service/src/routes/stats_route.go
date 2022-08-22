@@ -9,4 +9,7 @@ func StatsRoute(r *gin.Engine) {
 	r.GET("/latest", controllers.LatestStat())
 
 	r.GET("/greatest", controllers.GreatestStat())
+	
+	r.GET("/between", controllers.BetweenStat())
+
 }
