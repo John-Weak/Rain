@@ -13,7 +13,8 @@ export default function Live() {
 
   useEffect(() => {
     function outageWS(msg: MessageEvent<any>) {
-      setOutage(msg.data == "dead");
+      //setOutage(msg.data == "dead");
+      setOutage(false);
       swrMutate(`${API}latest?count=7`);
     }
     let c = new WebSocket(WS);
