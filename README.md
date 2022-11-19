@@ -4,9 +4,12 @@
 <img  src="https://user-images.githubusercontent.com/18065510/184974701-076eaccf-914a-4080-9d92-5ae9fe3df1d1.gif">
 </p>
 
-This project aims to record the timing and duration of power outage in my home.
+This project aimed to record the timing and duration of power outage in my home.
 
 ~~PS: Work in progress and not yet deployedNow gathering data for few weeks,till then only [live](https://rain.johnweak.dev/) status of outage will be shown.~~.
+
+
+**This project has been terminated, w.e.f. 26 oct 2022, I have realised that everything I did, could be done in a better and more efficient way. Someday I am going to re-write this from scratch and maybe start monitoring internet latency/speed along with it.**
 
 ---
 
