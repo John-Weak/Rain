@@ -3,6 +3,7 @@ import { getDropAndBackDrop } from "../utils/rain";
 import Header from "./header";
 import Footer from "./footer";
 import Head from "next/head";
+import Notice from "./notice";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const [drops, setDrops] = useState("");
@@ -61,6 +62,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div className="toggles w-full h-full">
         <div className="relative">
           <Header />
+          <Notice/>
           <div className="flex flex-col justify-between min-h-screen overflow-y-auto">
             {/* <button className="bg-red-500 p-2" onClick={toggleRain}>
             Toggle
